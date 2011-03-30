@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -87,6 +88,13 @@ namespace DFBackupAssistant
             DFSaveDirectory saveDir = (DFSaveDirectory)((App)Application.Current).saveDirectory;
             foreach (string saveGame in saveDir.ListAllSaves())
                 this.comboSaveSelect.Items.Add(saveGame);
+        }
+
+        private void buttonLaunchDF_Click(object sender, RoutedEventArgs e)
+        {
+            var startInfo = new ProcessStartInfo(Properties.Settings.Default.PathToDFExe);
+            startInfo.WorkingDirectory = new FileInfo(Properties.Settings.Default.PathToDFExe).DirectoryName;
+            Process.Start(startInfo);
         }
     }
 }
