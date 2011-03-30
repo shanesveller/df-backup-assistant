@@ -12,5 +12,6 @@ namespace DFBackupAssistant
     /// </summary>
     public partial class App : Application
     {
+        public DFSaveDirectory saveDirectory { get; set; }
     }
 }
