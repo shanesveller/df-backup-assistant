@@ -25,7 +25,7 @@ namespace DFBackupAssistant.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\7za920\\7za.exe")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\7za920\\\\7za.exe")]
         public string PathTo7zaExe {
             get {
                 return ((string)(this["PathTo7zaExe"]));
@@ -37,7 +37,7 @@ namespace DFBackupAssistant.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\LazyNewbPack[0.31.21][V8.5]\\Dwarf Fortress 0.31.21\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\LazyNewbPack[0.31.21][V8.5]\\\\Dwarf Fortress 0.31.21\\\\")]
         public string DFRootFolder {
             get {
                 return ((string)(this["DFRootFolder"]));
