@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -23,5 +24,35 @@ namespace DFBackupAssistant
         {
             InitializeComponent();
         }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.PathTo7zaExe == "" || !File.Exists(Properties.Settings.Default.PathTo7zaExe))
+            {
+                MessageBox.Show("7za.exe not found. Please locate.");
+                this.Locate7zip(sender, e);
+            }
+        }
+
+        private void Locate7zip(object sender, EventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.FileName = "7za"; // Default file name
+            dlg.DefaultExt = ".exe"; // Default file extension
+            dlg.Filter = "Applications (.exe)|*.exe"; // Filter files by extension
+
+            // Show open file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true)
+            {
+                // Open document
+                Properties.Settings.Default.PathTo7zaExe = dlg.FileName;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+
     }
 }

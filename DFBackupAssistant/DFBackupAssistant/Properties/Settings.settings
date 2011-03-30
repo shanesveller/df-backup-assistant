@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="PathTo7zaExe" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\\7za920\\7za.exe</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DFRootFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\\LazyNewbPack[0.31.21][V8.5]\\Dwarf Fortress 0.31.21\\</Value>
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
