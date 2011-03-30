@@ -3,15 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFBackupAssistant", "DFBackupAssistant\DFBackupAssistant.csproj", "{EC19BDE5-E3FD-49BF-A60D-F3B8877DB3F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubdirectoryBrowsing", "SubdirectoryBrowsing\SubdirectoryBrowsing.csproj", "{2E0550FC-1C34-4F23-BF62-FCE73FD45EFA}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
+		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = DFBackupAssistant\\DFBackupAssistant.csproj
 		SccProjectName1 = DFBackupAssistant
 		SccLocalPath1 = DFBackupAssistant
+		SccProjectUniqueName2 = SubdirectoryBrowsing\\SubdirectoryBrowsing.csproj
+		SccProjectName2 = SubdirectoryBrowsing
+		SccLocalPath2 = SubdirectoryBrowsing
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -22,6 +27,10 @@ Global
 		{EC19BDE5-E3FD-49BF-A60D-F3B8877DB3F8}.Debug|x86.Build.0 = Debug|x86
 		{EC19BDE5-E3FD-49BF-A60D-F3B8877DB3F8}.Release|x86.ActiveCfg = Release|x86
 		{EC19BDE5-E3FD-49BF-A60D-F3B8877DB3F8}.Release|x86.Build.0 = Release|x86
+		{2E0550FC-1C34-4F23-BF62-FCE73FD45EFA}.Debug|x86.ActiveCfg = Debug|x86
+		{2E0550FC-1C34-4F23-BF62-FCE73FD45EFA}.Debug|x86.Build.0 = Debug|x86
+		{2E0550FC-1C34-4F23-BF62-FCE73FD45EFA}.Release|x86.ActiveCfg = Release|x86
+		{2E0550FC-1C34-4F23-BF62-FCE73FD45EFA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
