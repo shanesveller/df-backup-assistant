@@ -86,7 +86,7 @@ namespace DFBackupAssistant
         private void PopulateSaveGames(object sender, RoutedEventArgs e)
         {
             DFSaveDirectory saveDir = (DFSaveDirectory)((App)Application.Current).saveDirectory;
-            foreach (string saveGame in saveDir.ListAllSaves())
+            foreach (DFSave saveGame in saveDir.SaveGames)
                 this.comboSaveSelect.Items.Add(saveGame);
         }
 

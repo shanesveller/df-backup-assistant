@@ -8,24 +8,19 @@ namespace DFBackupAssistant
 {
     public class DFSaveDirectory
     {
-        public string fullPath { get; set; }
+        public string FullPath { get; set; }
+        public List<DFSave> SaveGames { get; set; }
+
         public DFSaveDirectory(string fp)
         {
-            this.fullPath = fp;
-        }
-
-        public List<string> ListAllSaves()
-        {
-            List<string> subDirs = new List<string>();
-
-            DirectoryInfo[] dirs = new DirectoryInfo(this.fullPath).GetDirectories();
+            this.FullPath = fp;
+            this.SaveGames = new List<DFSave>();
+            DirectoryInfo[] dirs = new DirectoryInfo(this.FullPath).GetDirectories();
             var query = from d in dirs
                         where (d.Name != "current")
                         select d.Name;
             foreach (string subDir in query)
-                subDirs.Add(subDir);
-
-            return subDirs;
+                this.SaveGames.Add(new DFSave(this.FullPath, subDir));
         }
     }
 }
