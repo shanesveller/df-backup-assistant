@@ -32,6 +32,11 @@ namespace DFBackupAssistant
                 MessageBox.Show("7za.exe not found. Please locate.");
                 this.Locate7zip(sender, e);
             }
+            if (Properties.Settings.Default.PathToDFExe == "" || !File.Exists(Properties.Settings.Default.PathToDFExe))
+            {
+                MessageBox.Show("Dwarf Fortress.exe not found. Please locate.");
+                this.LocateDF2010(sender, e);
+            }
         }
 
         private void Locate7zip(object sender, EventArgs e)
@@ -53,6 +58,23 @@ namespace DFBackupAssistant
             }
         }
 
+        private void LocateDF2010(object sender, EventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.FileName = "Dwarf Fortress"; // Default file name
+            dlg.DefaultExt = ".exe"; // Default file extension
+            dlg.Filter = "Applications (.exe)|*.exe"; // Filter files by extension
 
+            // Show open file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true)
+            {
+                // Open document
+                Properties.Settings.Default.PathToDFExe = dlg.FileName;
+                Properties.Settings.Default.Save();
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@
     <Setting Name="PathTo7zaExe" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="DFRootFolder" Type="System.String" Scope="User">
+    <Setting Name="PathToDFExe" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

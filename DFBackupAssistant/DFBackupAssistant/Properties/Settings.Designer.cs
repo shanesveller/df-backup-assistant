@@ -38,12 +38,12 @@ namespace DFBackupAssistant.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DFRootFolder {
+        public string PathToDFExe {
             get {
-                return ((string)(this["DFRootFolder"]));
+                return ((string)(this["PathToDFExe"]));
             }
             set {
-                this["DFRootFolder"] = value;
+                this["PathToDFExe"] = value;
             }
         }
     }
