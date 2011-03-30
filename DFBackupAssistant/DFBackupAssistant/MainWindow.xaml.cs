@@ -96,5 +96,12 @@ namespace DFBackupAssistant
             startInfo.WorkingDirectory = new FileInfo(Properties.Settings.Default.PathToDFExe).DirectoryName;
             Process.Start(startInfo);
         }
+
+        private void buttonBackup_Click(object sender, RoutedEventArgs e)
+        {
+            DFSaveDirectory saveDir = ((App)Application.Current).saveDirectory;
+            DFSave saveToBackUp = (DFSave)this.comboSaveSelect.SelectedValue;
+            saveToBackUp.Archive(System.IO.Path.GetTempPath(), saveToBackUp.Name + ".7z");
+        }
     }
 }

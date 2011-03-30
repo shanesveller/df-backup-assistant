@@ -22,5 +22,13 @@ namespace DFBackupAssistant
             foreach (string subDir in query)
                 this.SaveGames.Add(new DFSave(this.FullPath, subDir));
         }
+
+        public DFSave GetSaveForName(string name)
+        {
+            var query = from save in this.SaveGames
+                        where (save.Name==name)
+                        select save;
+            return (DFSave)query.First();
+        }
     }
 }
