@@ -29,7 +29,8 @@ namespace DFBackupAssistant
             var startInfo = new ProcessStartInfo(Properties.Settings.Default.PathTo7zaExe);
             startInfo.UseShellExecute = false;
             startInfo.WorkingDirectory = this.ParentDir;
-            startInfo.Arguments = String.Format("a -t7z \"{0}\" \"{1}\\\"", Path.Combine(outputDir, outputFilename), this.Name);
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.Arguments = String.Format("a \"{0}\" \"{1}\\\" -t7z -ssw -mx0", Path.Combine(outputDir, outputFilename), this.Name);
             Process proc = Process.Start(startInfo);
             proc.WaitForExit();
             int exitCode = proc.ExitCode;
@@ -53,6 +54,18 @@ namespace DFBackupAssistant
                     
             }
             System.Diagnostics.Process.Start(outputDir);
+
+            /*
+            Directory.SetCurrentDirectory(this.ParentDir);
+            SevenZipCompressor compressor = new SevenZipCompressor();
+            compressor.FastCompression = true;
+            compressor.DirectoryStructure = true;
+            compressor.PreserveDirectoryRoot = false;
+            compressor.CompressionLevel = CompressionLevel.None;
+            compressor.ArchiveFormat = OutArchiveFormat.SevenZip;
+            compressor.CompressDirectory(this.Name, outputDir + "\\" + outputFilename);
+            System.Diagnostics.Process.Start(outputDir);
+             */
         }
     }
 }
