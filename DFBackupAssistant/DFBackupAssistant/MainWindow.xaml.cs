@@ -26,7 +26,7 @@ namespace DFBackupAssistant
             InitializeComponent();
         }
 
-        private void Locate7zip(object sender, EventArgs e)
+        private void Locate7zip(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.FileName = "7za"; // Default file name
@@ -45,7 +45,7 @@ namespace DFBackupAssistant
             }
         }
 
-        private void LocateDF2010(object sender, EventArgs e)
+        private void LocateDF2010(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.FileName = "Dwarf Fortress"; // Default file name
@@ -62,6 +62,18 @@ namespace DFBackupAssistant
                 Properties.Settings.Default.PathToDFExe = dlg.FileName;
                 Properties.Settings.Default.Save();
             }
+            this.PopulateSaveGames(sender, e);
+        }
+
+        private void PopulateSaveGames(object sender, RoutedEventArgs e)
+        {
+            FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
+            string saveDirPath = String.Format("{0}\\data\\save", fi.DirectoryName);
+            DFSaveDirectory saveDir = new DFSaveDirectory(saveDirPath);
+            ((App)Application.Current).saveDirectory = saveDir;
+            this.comboSaveSelect.Items.Clear();
+            foreach (DFSave saveGame in saveDir.SaveGames)
+                this.comboSaveSelect.Items.Add(saveGame);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -76,18 +88,10 @@ namespace DFBackupAssistant
                 MessageBox.Show("Dwarf Fortress.exe not found. Please locate.");
                 this.LocateDF2010(sender, e);
             }
-
-            FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
-            string saveDir = String.Format("{0}\\data\\save", fi.DirectoryName);
-            ((App)Application.Current).saveDirectory = new DFSaveDirectory(saveDir);
-            this.PopulateSaveGames(sender, e);
-        }
-
-        private void PopulateSaveGames(object sender, RoutedEventArgs e)
-        {
-            DFSaveDirectory saveDir = (DFSaveDirectory)((App)Application.Current).saveDirectory;
-            foreach (DFSave saveGame in saveDir.SaveGames)
-                this.comboSaveSelect.Items.Add(saveGame);
+            else
+            {
+                this.PopulateSaveGames(sender, e);
+            }
         }
 
         private void buttonLaunchDF_Click(object sender, RoutedEventArgs e)
@@ -100,8 +104,13 @@ namespace DFBackupAssistant
         private void buttonBackup_Click(object sender, RoutedEventArgs e)
         {
             DFSaveDirectory saveDir = ((App)Application.Current).saveDirectory;
-            DFSave saveToBackUp = (DFSave)this.comboSaveSelect.SelectedValue;
-            saveToBackUp.Archive(System.IO.Path.GetTempPath(), saveToBackUp.Name + ".7z");
+            DFSave saveToBackUp;
+            try
+            {
+                saveToBackUp = (DFSave)this.comboSaveSelect.SelectedItem;
+                saveToBackUp.Archive(System.IO.Path.GetTempPath(), saveToBackUp.Name + ".7z");
+            }
+            catch (NullReferenceException) { }
         }
     }
 }
