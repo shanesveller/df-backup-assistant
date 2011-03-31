@@ -67,5 +67,17 @@ namespace DFBackupAssistant
             System.Diagnostics.Process.Start(outputDir);
              */
         }
+
+        public void Archive(string outputDir, string outputFilename, bool deleteAfter)
+        {
+            this.Archive(outputDir, outputFilename);
+            if (deleteAfter)
+                this.Delete();
+        }
+
+        public void Delete()
+        {
+            new DirectoryInfo(this.FullPath).Delete(true);
+        }
     }
 }

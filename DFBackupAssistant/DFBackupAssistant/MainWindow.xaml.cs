@@ -71,9 +71,10 @@ namespace DFBackupAssistant
             string saveDirPath = String.Format("{0}\\data\\save", fi.DirectoryName);
             DFSaveDirectory saveDir = new DFSaveDirectory(saveDirPath);
             ((App)Application.Current).saveDirectory = saveDir;
-            this.comboSaveSelect.Items.Clear();
+            comboSaveSelect.Items.Clear();
             foreach (DFSave saveGame in saveDir.SaveGames)
-                this.comboSaveSelect.Items.Add(saveGame);
+                comboSaveSelect.Items.Add(saveGame);
+            comboSaveSelect.SelectedIndex = 0;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -108,7 +109,10 @@ namespace DFBackupAssistant
             try
             {
                 saveToBackUp = (DFSave)this.comboSaveSelect.SelectedItem;
-                saveToBackUp.Archive(System.IO.Path.GetTempPath(), saveToBackUp.Name + ".7z");
+                
+                saveToBackUp.Archive(saveToBackUp.ParentDir, saveToBackUp.Name + ".7z", (bool)checkBoxEraseAfter.IsChecked);
+                if((bool)checkBoxEraseAfter.IsChecked)
+                    this.PopulateSaveGames(sender, e);
             }
             catch (NullReferenceException) { }
         }
