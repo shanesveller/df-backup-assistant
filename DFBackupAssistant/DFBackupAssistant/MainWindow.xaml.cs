@@ -64,6 +64,7 @@ namespace DFBackupAssistant
             comboBackupSelect.Items.Clear();
             foreach(Backup b in this.backupDir.Backups)
                 comboBackupSelect.Items.Add(b);
+            comboBackupSelect.SelectedIndex = 0;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -81,6 +82,11 @@ namespace DFBackupAssistant
 
             this.PopulateSaveGames(sender, e);
             this.PopulateBackups(sender, e);
+        }
+
+        private void menuExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         private void buttonLaunchDF_Click(object sender, RoutedEventArgs e)
@@ -108,12 +114,25 @@ namespace DFBackupAssistant
 
         private void buttonRestore_Click(object sender, RoutedEventArgs e)
         {
-
+            Backup selectedBackup = (Backup)this.comboBackupSelect.SelectedItem;
+            DFSaveDirectory saveDir = ((App)Application.Current).saveDirectory;
+            string restoreAs = textBoxRestoreAs.Text;
+            if (this.textBoxRestoreAs.Text == "")
+            {
+                MessageBox.Show("You must enter a name to restore this backup as.", "Error: No Restore-As Name", MessageBoxButton.OK, MessageBoxImage.Error);
+                textBoxRestoreAs.Focus();
+            }
+            else
+            {
+                selectedBackup.Restore(saveDir.FullPath, this.textBoxRestoreAs.Text, (bool)this.checkBoxRestoreOverwrite.IsChecked);
+                string msg = String.Format("Backup {0} restored as {1} successfully.", selectedBackup.Name, restoreAs);
+                MessageBox.Show(msg, "Restore successful");
+            }
         }
 
-        private void menuExit_Click(object sender, RoutedEventArgs e)
+        private void comboBackupSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.textBoxRestoreAs.Text = ((Backup)this.comboBackupSelect.SelectedItem).Name.Replace(".zip","");
         }
     }
 }
