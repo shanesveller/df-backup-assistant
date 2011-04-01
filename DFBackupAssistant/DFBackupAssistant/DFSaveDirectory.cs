@@ -10,6 +10,7 @@ namespace DFBackupAssistant
     {
         public string FullPath { get; set; }
         public List<DFSave> SaveGames { get; set; }
+        public DirectoryInfo DirectoryInfo { get { return new DirectoryInfo(this.FullPath); } }
 
         public DFSaveDirectory(string fp)
         {
