@@ -127,27 +127,34 @@ namespace DFBackupAssistant
         {
             Backup selectedBackup = (Backup)this.comboBackupSelect.SelectedItem;
             string restoreAs = textBoxRestoreAs.Text;
+            string targetDirectory = System.IO.Path.Combine(this.saveDirectory.FullPath, restoreAs);
+            bool overwrite = false;
+
+            if (selectedBackup == null)
+            {
+                MessageBox.Show("No backup file selected.", "Error: No Backup File Selected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             if (this.textBoxRestoreAs.Text == "")
             {
-                MessageBox.Show("You must enter a name to restore this backup as.", "Error: No Restore-As Name", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("You must enter a folder name to restore this backup as.", "Error: No Restore-As Name", MessageBoxButton.OK, MessageBoxImage.Error);
                 textBoxRestoreAs.Focus();
+                return;
             }
-            else
+            
+            if ((bool)checkBoxRestoreOverwrite.IsChecked)
+                overwrite = true;
+            else if (Directory.Exists(targetDirectory))
             {
-                try
-                {
-                    selectedBackup.Restore(this.saveDirectory.FullPath, this.textBoxRestoreAs.Text, (bool)this.checkBoxRestoreOverwrite.IsChecked);
-                    string msg = String.Format("Backup {0} restored as {1} successfully.", selectedBackup.Name, restoreAs);
-                    MessageBox.Show(msg, "Restore successful");
-                }
-                catch(InvalidOperationException ex)
-                {
-                    if (ex.Message == "Invalid operation: save directory exists")
-                        MessageBox.Show("Error restoring backup: save directory already exists.", "Error: Save Exists", MessageBoxButton.OK, MessageBoxImage.Error);
-                    else
-                        throw ex;
-                }
+                MessageBoxResult res = MessageBox.Show("Overwrite existing savegame?", "Save Game Exists", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (res == MessageBoxResult.Yes)
+                    overwrite = true;
             }
+
+            selectedBackup.Restore(System.IO.Path.Combine(this.saveDirectory.FullPath, this.textBoxRestoreAs.Text), overwrite);
+            string msg = String.Format("Backup {0} restored as {1} successfully.", selectedBackup.Name, restoreAs);
+            MessageBox.Show(msg, "Restore Successful", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void comboBackupSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)

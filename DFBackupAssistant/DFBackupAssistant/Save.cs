@@ -34,7 +34,7 @@ namespace DFBackupAssistant
             using (var zip = new ZipFile())
             {
                 zip.CompressionLevel = CompressionLevel.None;
-                zip.AddDirectory(this.FullPath, this.Name);
+                zip.AddDirectory(this.FullPath);
                 zip.Save(this.ArchiveFilename(timestampArchive));
             }
 
