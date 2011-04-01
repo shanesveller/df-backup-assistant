@@ -26,22 +26,26 @@ namespace DFBackupAssistant
             return this.Name;
         }
 
-        public void Archive()
+        public void Archive(bool deleteAfter = false, bool timestampArchive = true)
         {
             using (var zip = new ZipFile())
             {
                 zip.CompressionLevel = CompressionLevel.None;
                 zip.AddDirectory(this.FullPath, this.Name);
-                zip.Save(Path.Combine(this.ParentDir, this.Name + ".zip"));
-            }
-            System.Diagnostics.Process.Start(this.ParentDir);
-        }
+                string filename;
 
-        public void Archive(bool deleteAfter)
-        {
-            this.Archive();
+                if (timestampArchive)
+                    filename = String.Format("{0}.{1}.zip", Path.Combine(this.ParentDir, this.Name), DateTime.Now.ToString("yyyyMMdd-HHmm"));
+                else
+                    filename = String.Format("{0}.zip", Path.Combine(this.ParentDir, this.Name));
+                
+                zip.Save(filename);
+            }
+
             if (deleteAfter)
                 this.Delete();
+
+            System.Diagnostics.Process.Start(this.ParentDir);
         }
 
         public void Delete()
