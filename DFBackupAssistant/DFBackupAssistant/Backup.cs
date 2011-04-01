@@ -16,23 +16,24 @@ namespace DFBackupAssistant
             this.Filename = f;
             this.Name = n;
         }
-        public bool Restore(string folder, string name, bool overwrite = false)
+        public void Restore(string folder, string name, bool overwrite = false)
         {
             using (ZipFile zip = new ZipFile(this.Filename))
             {
-                if (overwrite)
-                    zip.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
-                else
+                DirectoryInfo di = new DirectoryInfo(Path.Combine(folder, name));
+                if (di.Exists)
                 {
-                    DirectoryInfo di = new DirectoryInfo(Path.Combine(folder, name));
-                    if (di.Exists)
-                    {
-                        return false;
-                    }
+                    if (overwrite)
+                        di.Delete(true);
+                    else
+                        throw new InvalidOperationException("Invalid operation: save directory exists");
                 }
                 zip.ExtractAll(folder);
-                return true;
             }
+        }
+        public override string ToString()
+        {
+            return this.Name;
         }
     }
 }
