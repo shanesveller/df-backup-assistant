@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Ionic.Zip;
+using Ionic.Zlib;
 
 namespace DFBackupAssistant
 {
@@ -11,7 +13,7 @@ namespace DFBackupAssistant
     {
         public string ParentDir { get; set; }
         public string Name { get; set; }
-        public string FullPath { get { return String.Format(@"{0}\{1}", this.ParentDir, this.Name); } }
+        public string FullPath { get { return Path.Combine(this.ParentDir, this.Name); } }
 
         public DFSave(string dir, string n)
         {
@@ -24,53 +26,20 @@ namespace DFBackupAssistant
             return this.Name;
         }
 
-        public void Archive(string outputDir, string outputFilename)
+        public void Archive()
         {
-            var startInfo = new ProcessStartInfo(Properties.Settings.Default.PathTo7zaExe);
-            startInfo.UseShellExecute = false;
-            startInfo.WorkingDirectory = this.ParentDir;
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.Arguments = String.Format("a \"{0}\" \"{1}\\\" -t7z -ssw -mx0", Path.Combine(outputDir, outputFilename), this.Name);
-            Process proc = Process.Start(startInfo);
-            proc.WaitForExit();
-            int exitCode = proc.ExitCode;
-            switch (exitCode)
+            using (var zip = new ZipFile())
             {
-                case 0:
-                    break;
-                case 1:
-                    // Warning
-                case 2:
-                    // Fatal Error
-                case 7:
-                    // Command Line Error
-                case 8:
-                    // Not Enough Memory Error
-                case 255:
-                    // User stopped the process
-                default:
-                    // Unknown
-                    break;
-                    
+                zip.CompressionLevel = CompressionLevel.None;
+                zip.AddDirectory(this.FullPath, this.Name);
+                zip.Save(Path.Combine(this.ParentDir, this.Name + ".zip"));
             }
-            System.Diagnostics.Process.Start(outputDir);
-
-            /*
-            Directory.SetCurrentDirectory(this.ParentDir);
-            SevenZipCompressor compressor = new SevenZipCompressor();
-            compressor.FastCompression = true;
-            compressor.DirectoryStructure = true;
-            compressor.PreserveDirectoryRoot = false;
-            compressor.CompressionLevel = CompressionLevel.None;
-            compressor.ArchiveFormat = OutArchiveFormat.SevenZip;
-            compressor.CompressDirectory(this.Name, outputDir + "\\" + outputFilename);
-            System.Diagnostics.Process.Start(outputDir);
-             */
+            System.Diagnostics.Process.Start(this.ParentDir);
         }
 
-        public void Archive(string outputDir, string outputFilename, bool deleteAfter)
+        public void Archive(bool deleteAfter)
         {
-            this.Archive(outputDir, outputFilename);
+            this.Archive();
             if (deleteAfter)
                 this.Delete();
         }

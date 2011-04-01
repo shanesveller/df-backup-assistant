@@ -86,7 +86,7 @@ namespace DFBackupAssistant
             {
                 saveToBackUp = (DFSave)this.comboSaveSelect.SelectedItem;
                 
-                saveToBackUp.Archive(saveToBackUp.ParentDir, saveToBackUp.Name + ".7z", (bool)checkBoxEraseAfter.IsChecked);
+                saveToBackUp.Archive((bool)checkBoxEraseAfter.IsChecked);
                 if((bool)checkBoxEraseAfter.IsChecked)
                     this.PopulateSaveGames(sender, e);
             }
