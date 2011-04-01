@@ -98,15 +98,27 @@ namespace DFBackupAssistant
         private void buttonBackup_Click(object sender, RoutedEventArgs e)
         {
             Save saveToBackUp;
+            bool eraseAfter = (bool)checkBoxEraseAfter.IsChecked;
+            bool timestamped = (bool)checkBoxTimestampArchive.IsChecked;
+            bool browseAfter = false;
             try
             {
                 saveToBackUp = (Save)this.comboSaveSelect.SelectedItem;
-                
-                saveToBackUp.Archive((bool)checkBoxEraseAfter.IsChecked, (bool)checkBoxTimestampArchive.IsChecked);
-                if((bool)checkBoxEraseAfter.IsChecked)
+                string filename = saveToBackUp.ArchiveFilename(timestamped);
+
+                if (File.Exists(filename))
+                {
+                    MessageBoxResult res = MessageBox.Show("Do you want to overwrite the existing backup?", "Backup Exists", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (res == MessageBoxResult.Yes)
+                        File.Delete(filename);
+                }
+
+                saveToBackUp.Archive(eraseAfter, timestamped);
+                if (eraseAfter)
                     this.PopulateSaveGames(sender, e);
                 this.PopulateBackups(sender, e);
-                this.LaunchSaveDirectory(sender, e);
+                if (browseAfter)
+                    this.BrowseSaveDirectory(sender, e);
             }
             catch (NullReferenceException) { }
         }
@@ -144,7 +156,7 @@ namespace DFBackupAssistant
                 this.textBoxRestoreAs.Text = ((Backup)this.comboBackupSelect.SelectedItem).Name.Split('.').First();
         }
 
-        private void LaunchSaveDirectory(object sender, RoutedEventArgs e)
+        private void BrowseSaveDirectory(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(this.saveDirectory.FullPath);
         }

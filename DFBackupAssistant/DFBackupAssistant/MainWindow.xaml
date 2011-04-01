@@ -9,7 +9,7 @@
                 <MenuItem Header="Launch _Dwarf Fortress" Click="buttonLaunchDF_Click"/>
                 <MenuItem Header="_Refresh Save Listing" Click="PopulateSaveGames"/>
                 <MenuItem Header="R_efresh Backup Listing" Click="PopulateBackups"/>
-                <MenuItem Header="_Browse Save Directory" Click="LaunchSaveDirectory" />
+                <MenuItem Header="_Browse Save Directory" Click="BrowseSaveDirectory" />
                 <Separator />
                 <MenuItem Header="E_xit" Click="menuExit_Click" />
             </MenuItem>

@@ -28,22 +28,26 @@ namespace DFBackupAssistant
 
         public void Archive(bool deleteAfter = false, bool timestampArchive = true)
         {
+            if (new FileInfo(this.ArchiveFilename(timestampArchive)).Exists)
+                throw new InvalidOperationException("Destination filename exists.");
+                            
             using (var zip = new ZipFile())
             {
                 zip.CompressionLevel = CompressionLevel.None;
                 zip.AddDirectory(this.FullPath, this.Name);
-                string filename;
-
-                if (timestampArchive)
-                    filename = String.Format("{0}.{1}.zip", Path.Combine(this.ParentDir, this.Name), DateTime.Now.ToString("yyyyMMdd-HHmm"));
-                else
-                    filename = String.Format("{0}.zip", Path.Combine(this.ParentDir, this.Name));
-                
-                zip.Save(filename);
+                zip.Save(this.ArchiveFilename(timestampArchive));
             }
 
             if (deleteAfter)
                 this.Delete();
+        }
+
+        public string ArchiveFilename(bool timestamped)
+        {
+            if (timestamped)
+                return String.Format("{0}.{1}.zip", Path.Combine(this.ParentDir, this.Name), DateTime.Now.ToString("yyyyMMdd-HHmm"));
+            else
+                return String.Format("{0}.zip", Path.Combine(this.ParentDir, this.Name));
         }
 
         public void Delete()
