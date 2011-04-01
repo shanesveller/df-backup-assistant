@@ -21,8 +21,9 @@ namespace DFBackupAssistant
     /// </summary>
     public partial class MainWindow : Window
     {
-        public List<DFSave> saveGames { get; set; }
+        public DFSaveDirectory saveDirectory { get; set; }
         private BackupDirectory backupDir { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -50,17 +51,15 @@ namespace DFBackupAssistant
 
         private void PopulateSaveGames(object sender, RoutedEventArgs e)
         {
-            DFSaveDirectory saveDir = ((App)Application.Current).saveDirectory;
             comboSaveSelect.Items.Clear();
-            foreach (DFSave saveGame in saveDir.SaveGames)
+            foreach (DFSave saveGame in this.saveDirectory.SaveGames)
                 comboSaveSelect.Items.Add(saveGame);
             comboSaveSelect.SelectedIndex = 0;
         }
 
         private void PopulateBackups(object sender, RoutedEventArgs e)
         {
-            DFSaveDirectory saveDir = ((App)Application.Current).saveDirectory;
-            this.backupDir = new BackupDirectory(saveDir.FullPath);
+            this.backupDir = new BackupDirectory(this.saveDirectory.FullPath);
             comboBackupSelect.Items.Clear();
             foreach(Backup b in this.backupDir.Backups)
                 comboBackupSelect.Items.Add(b);
@@ -77,9 +76,8 @@ namespace DFBackupAssistant
             
             FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
             string saveDirPath = System.IO.Path.Combine(fi.DirectoryName, "data", "save");
-            DFSaveDirectory saveDir = new DFSaveDirectory(saveDirPath);
-            ((App)Application.Current).saveDirectory = saveDir;
-
+            this.saveDirectory = new DFSaveDirectory(saveDirPath);
+            
             this.PopulateSaveGames(sender, e);
             this.PopulateBackups(sender, e);
         }
@@ -98,7 +96,6 @@ namespace DFBackupAssistant
 
         private void buttonBackup_Click(object sender, RoutedEventArgs e)
         {
-            DFSaveDirectory saveDir = ((App)Application.Current).saveDirectory;
             DFSave saveToBackUp;
             try
             {
@@ -115,7 +112,6 @@ namespace DFBackupAssistant
         private void buttonRestore_Click(object sender, RoutedEventArgs e)
         {
             Backup selectedBackup = (Backup)this.comboBackupSelect.SelectedItem;
-            DFSaveDirectory saveDir = ((App)Application.Current).saveDirectory;
             string restoreAs = textBoxRestoreAs.Text;
             if (this.textBoxRestoreAs.Text == "")
             {
@@ -124,9 +120,19 @@ namespace DFBackupAssistant
             }
             else
             {
-                selectedBackup.Restore(saveDir.FullPath, this.textBoxRestoreAs.Text, (bool)this.checkBoxRestoreOverwrite.IsChecked);
-                string msg = String.Format("Backup {0} restored as {1} successfully.", selectedBackup.Name, restoreAs);
-                MessageBox.Show(msg, "Restore successful");
+                try
+                {
+                    selectedBackup.Restore(this.saveDirectory.FullPath, this.textBoxRestoreAs.Text, (bool)this.checkBoxRestoreOverwrite.IsChecked);
+                    string msg = String.Format("Backup {0} restored as {1} successfully.", selectedBackup.Name, restoreAs);
+                    MessageBox.Show(msg, "Restore successful");
+                }
+                catch(InvalidOperationException ex)
+                {
+                    if (ex.Message == "Invalid operation: save directory exists")
+                        MessageBox.Show("Error restoring backup: save directory already exists.", "Error: Save Exists", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        throw ex;
+                }
             }
         }
 
