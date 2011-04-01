@@ -140,7 +140,8 @@ namespace DFBackupAssistant
 
         private void comboBackupSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.textBoxRestoreAs.Text = ((Backup)this.comboBackupSelect.SelectedItem).Name.Split('.').First();
+            if (this.comboBackupSelect.SelectedItem != null)
+                this.textBoxRestoreAs.Text = ((Backup)this.comboBackupSelect.SelectedItem).Name.Split('.').First();
         }
 
         private void LaunchSaveDirectory(object sender, RoutedEventArgs e)
