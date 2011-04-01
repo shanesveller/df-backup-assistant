@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("DFBackupAssistant")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hurley Binsons Medical Equipment Inc.")]
+[assembly: AssemblyCompany("shanesveller.com")]
 [assembly: AssemblyProduct("DFBackupAssistant")]
-[assembly: AssemblyCopyright("Copyright © Hurley Binsons Medical Equipment Inc. 2011")]
+[assembly: AssemblyCopyright("Copyright © Shane Sveller. 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -53,3 +53,4 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguageAttribute("en")]
