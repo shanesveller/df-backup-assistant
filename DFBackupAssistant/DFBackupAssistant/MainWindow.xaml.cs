@@ -47,6 +47,7 @@ namespace DFBackupAssistant
                 Properties.Settings.Default.Save();
             }
             this.PopulateSaveGames(sender, e);
+            this.PopulateBackups(sender, e);
         }
 
         private void PopulateSaveGames(object sender, RoutedEventArgs e)
@@ -139,6 +140,11 @@ namespace DFBackupAssistant
         private void comboBackupSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this.textBoxRestoreAs.Text = ((Backup)this.comboBackupSelect.SelectedItem).Name.Split('.').First();
+        }
+
+        private void LaunchSaveDirectory(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
