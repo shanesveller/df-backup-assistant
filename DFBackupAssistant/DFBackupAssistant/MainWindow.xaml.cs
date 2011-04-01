@@ -138,7 +138,7 @@ namespace DFBackupAssistant
 
         private void comboBackupSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.textBoxRestoreAs.Text = ((Backup)this.comboBackupSelect.SelectedItem).Name.Replace(".zip","");
+            this.textBoxRestoreAs.Text = ((Backup)this.comboBackupSelect.SelectedItem).Name.Split('.').First();
         }
     }
 }
