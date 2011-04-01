@@ -10,11 +10,11 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Menu>
-            <MenuItem Header="File">
+            <MenuItem Header="_File">
                 <MenuItem Header="Locate Dwarf Fortress.exe" Click="LocateDF2010"/>
                 <MenuItem Header="Select Backup Save Folder" IsEnabled="False" />
                 <Separator />
-                <MenuItem Header="Exit" Click="menuExit_Click" />
+                <MenuItem Header="E_xit" Click="menuExit_Click" />
             </MenuItem>
         </Menu>
         <Button Content="Start Game" Height="23" HorizontalAlignment="Left" Margin="12,0,0,0" Name="buttonLaunchDF" VerticalAlignment="Center" Width="75" Click="buttonLaunchDF_Click" ToolTip="Launches Dwarf Fortress" Grid.Row="1" />
