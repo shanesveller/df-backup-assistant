@@ -16,19 +16,8 @@ namespace DFBackupAssistant
             this.FullPath = fp;
             this.SaveGames = new List<DFSave>();
             DirectoryInfo[] dirs = new DirectoryInfo(this.FullPath).GetDirectories();
-            var query = from d in dirs
-                        where (d.Name != "current")
-                        select d.Name;
-            foreach (string subDir in query)
-                this.SaveGames.Add(new DFSave(this.FullPath, subDir));
-        }
-
-        public DFSave GetSaveForName(string name)
-        {
-            var query = from save in this.SaveGames
-                        where (save.Name==name)
-                        select save;
-            return (DFSave)query.First();
+            foreach (DirectoryInfo subDir in dirs)
+                this.SaveGames.Add(new DFSave(this.FullPath, subDir.Name));
         }
     }
 }
