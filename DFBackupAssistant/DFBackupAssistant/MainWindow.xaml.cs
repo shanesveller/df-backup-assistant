@@ -148,5 +148,28 @@ namespace DFBackupAssistant
         {
             System.Diagnostics.Process.Start(this.saveDirectory.FullPath);
         }
+
+        private void UpdateBackupFilenameTextBox(object sender, RoutedEventArgs e)
+        {
+            this.UpdateBackupFilenameTextBox();
+        }
+
+        private void UpdateBackupFilenameTextBox(object sender, SelectionChangedEventArgs e)
+        {
+            this.UpdateBackupFilenameTextBox();
+        }
+
+        private void UpdateBackupFilenameTextBox()
+        {
+            if (this.comboSaveSelect.SelectedItem != null)
+            {
+                this.textBoxBackupFilename.Text = this.comboSaveSelect.SelectedItem.ToString();
+                if ((bool)this.checkBoxTimestampArchive.IsChecked)
+                    this.textBoxBackupFilename.Text += DateTime.Now.ToString(".yyyyMMdd-HHmm");
+                this.textBoxBackupFilename.Text += ".zip";
+            }
+        }
+
+
     }
 }

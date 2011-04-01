@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DFBackupAssistant.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Dwarf Fortress Backup Assistant" Height="222" Width="286" Loaded="Window_Loaded">
+        Title="Dwarf Fortress Backup Assistant" Height="232" Width="305" Loaded="Window_Loaded">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -21,17 +21,19 @@
         <TabControl DockPanel.Dock="Top">
             <TabItem Header="Backup">
                 <StackPanel>
-                    <ComboBox Name="comboSaveSelect" Margin="3" />
+                    <ComboBox Name="comboSaveSelect" Margin="3" SelectionChanged="UpdateBackupFilenameTextBox" />
                     <Button Content="Back Up" Name="buttonBackup" Click="buttonBackup_Click" Margin="3" />
-                    <CheckBox Content="Timestamp Archive" Name="checkBoxTimestampArchive" IsChecked="True" Margin="3" />
+                    <CheckBox Content="Timestamp Archive" Name="checkBoxTimestampArchive" IsChecked="True" Margin="3" Checked="UpdateBackupFilenameTextBox" Unchecked="UpdateBackupFilenameTextBox" />
                     <CheckBox Content="Erase Save After Backup" Name="checkBoxEraseAfter" Margin="3" />
+                    <Label Content="Backup Filename:"/>
+                    <TextBox Name="textBoxBackupFilename" IsReadOnly="True" Margin="3" IsEnabled="False" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Restore">
                 <StackPanel>
                     <ComboBox Name="comboBackupSelect" Text="Select a backup file:" SelectionChanged="comboBackupSelect_SelectionChanged" Margin="3" />
                     <Button Content="Restore" Name="buttonRestore" Click="buttonRestore_Click" Margin="3" />
-                    <Label Content="Restore As" Name="label1" Margin="3" />
+                    <Label Content="Restore As:" Name="label1" Margin="3" />
                     <TextBox Name="textBoxRestoreAs" Margin="3" />
                     <CheckBox Content="Overwrite" Grid.Row="3" Name="checkBoxRestoreOverwrite" Margin="3" />
                 </StackPanel>
