@@ -21,6 +21,8 @@ namespace DFBackupAssistant
     /// </summary>
     public partial class MainWindow : Window
     {
+        public List<DFSave> saveGames { get; set; }
+        public List<Backup> backups { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -48,14 +50,17 @@ namespace DFBackupAssistant
 
         private void PopulateSaveGames(object sender, RoutedEventArgs e)
         {
-            FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
-            string saveDirPath = String.Format("{0}\\data\\save", fi.DirectoryName);
-            DFSaveDirectory saveDir = new DFSaveDirectory(saveDirPath);
-            ((App)Application.Current).saveDirectory = saveDir;
+            DFSaveDirectory saveDir = ((App)Application.Current).saveDirectory;
             comboSaveSelect.Items.Clear();
             foreach (DFSave saveGame in saveDir.SaveGames)
                 comboSaveSelect.Items.Add(saveGame);
             comboSaveSelect.SelectedIndex = 0;
+        }
+
+        private void PopulateBackups(object sender, RoutedEventArgs e)
+        {
+            DFSaveDirectory saveDir = ((App)Application.Current).saveDirectory;
+
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -67,6 +72,11 @@ namespace DFBackupAssistant
             }
             else
             {
+                FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
+                string saveDirPath = System.IO.Path.Combine(fi.DirectoryName, "data", "save");
+                DFSaveDirectory saveDir = new DFSaveDirectory(saveDirPath);
+                ((App)Application.Current).saveDirectory = saveDir;
+
                 this.PopulateSaveGames(sender, e);
             }
         }
