@@ -6,12 +6,12 @@ using System.Text;
 
 namespace DFBackupAssistant
 {
-    class BackupDirectory
+    public class BackupDirectory
     {
         public string FullPath { get; set; }
         public List<Backup> Backups { get; set; }
 
-        BackupDirectory(string f)
+        public BackupDirectory(string f)
         {
             this.FullPath = f;
             this.Backups = new List<Backup>();

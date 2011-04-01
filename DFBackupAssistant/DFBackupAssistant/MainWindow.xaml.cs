@@ -22,7 +22,7 @@ namespace DFBackupAssistant
     public partial class MainWindow : Window
     {
         public List<DFSave> saveGames { get; set; }
-        public List<Backup> backups { get; set; }
+        private BackupDirectory backupDir { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -60,7 +60,10 @@ namespace DFBackupAssistant
         private void PopulateBackups(object sender, RoutedEventArgs e)
         {
             DFSaveDirectory saveDir = ((App)Application.Current).saveDirectory;
-
+            this.backupDir = new BackupDirectory(saveDir.FullPath);
+            comboBackupSelect.Items.Clear();
+            foreach(Backup b in this.backupDir.Backups)
+                comboBackupSelect.Items.Add(b);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -70,15 +73,14 @@ namespace DFBackupAssistant
                 MessageBox.Show("Dwarf Fortress.exe not found. Please locate.");
                 this.LocateDF2010(sender, e);
             }
-            else
-            {
-                FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
-                string saveDirPath = System.IO.Path.Combine(fi.DirectoryName, "data", "save");
-                DFSaveDirectory saveDir = new DFSaveDirectory(saveDirPath);
-                ((App)Application.Current).saveDirectory = saveDir;
+            
+            FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
+            string saveDirPath = System.IO.Path.Combine(fi.DirectoryName, "data", "save");
+            DFSaveDirectory saveDir = new DFSaveDirectory(saveDirPath);
+            ((App)Application.Current).saveDirectory = saveDir;
 
-                this.PopulateSaveGames(sender, e);
-            }
+            this.PopulateSaveGames(sender, e);
+            this.PopulateBackups(sender, e);
         }
 
         private void buttonLaunchDF_Click(object sender, RoutedEventArgs e)
@@ -99,8 +101,14 @@ namespace DFBackupAssistant
                 saveToBackUp.Archive((bool)checkBoxEraseAfter.IsChecked, (bool)checkBoxTimestampArchive.IsChecked);
                 if((bool)checkBoxEraseAfter.IsChecked)
                     this.PopulateSaveGames(sender, e);
+                this.PopulateBackups(sender, e);
             }
             catch (NullReferenceException) { }
+        }
+
+        private void buttonRestore_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void menuExit_Click(object sender, RoutedEventArgs e)

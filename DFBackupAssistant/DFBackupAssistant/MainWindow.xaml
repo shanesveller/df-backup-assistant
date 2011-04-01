@@ -23,10 +23,10 @@
         <Button Content="Back Up" Height="23" HorizontalAlignment="Right" Margin="0,8,12,0" Name="buttonBackup" VerticalAlignment="Top" Width="87" Click="buttonBackup_Click" Grid.Row="2" />
         <CheckBox Content="Timestamp Archive" Grid.Row="2" Height="16" HorizontalAlignment="Left" Margin="12,38,0,0" Name="checkBoxTimestampArchive" VerticalAlignment="Top" IsChecked="True" />
         <CheckBox Content="Erase Save After Backup" Grid.Row="2" Height="16" Margin="0,38,12,0" Name="checkBoxEraseAfter" VerticalAlignment="Top" HorizontalAlignment="Right" Width="134" />
-        <ComboBox Grid.Row="3" Height="23" HorizontalAlignment="Left" Margin="12,8,0,0" Name="comboBackupSelect" VerticalAlignment="Top" Width="180" />
-        <Button Content="Restore" Grid.Row="3" Height="23" Margin="0,6,12,0" Name="buttonRestore" VerticalAlignment="Top" HorizontalAlignment="Right" Width="87" />
-        <TextBox Grid.Row="3" Height="23" HorizontalAlignment="Left" Margin="80,36,0,0" Name="textBoxRestoreAs" VerticalAlignment="Top" Width="112" />
+        <ComboBox Grid.Row="3" Height="23" HorizontalAlignment="Left" Margin="12,8,0,0" Name="comboBackupSelect" VerticalAlignment="Top" Width="180" Text="Select a backup file:" />
+        <Button Content="Restore" Grid.Row="3" Height="23" Margin="0,6,12,0" Name="buttonRestore" VerticalAlignment="Top" HorizontalAlignment="Right" Width="87" Click="buttonRestore_Click" />
         <Label Content="Restore As" Grid.Row="3" Height="22" HorizontalAlignment="Left" Margin="12,37,0,0" Name="label1" VerticalAlignment="Top" />
+        <TextBox Grid.Row="3" Height="23" HorizontalAlignment="Left" Margin="80,36,0,0" Name="textBoxRestoreAs" VerticalAlignment="Top" Width="112" />
         <CheckBox Content="Overwrite" Grid.Row="3" Height="16" Margin="0,39,12,0" Name="checkBoxRestoreOverwrite" VerticalAlignment="Top" HorizontalAlignment="Right" Width="87" />
     </Grid>
 </Window>
