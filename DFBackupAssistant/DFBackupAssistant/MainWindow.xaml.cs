@@ -106,6 +106,7 @@ namespace DFBackupAssistant
                 if((bool)checkBoxEraseAfter.IsChecked)
                     this.PopulateSaveGames(sender, e);
                 this.PopulateBackups(sender, e);
+                this.LaunchSaveDirectory(sender, e);
             }
             catch (NullReferenceException) { }
         }
@@ -144,7 +145,7 @@ namespace DFBackupAssistant
 
         private void LaunchSaveDirectory(object sender, RoutedEventArgs e)
         {
-
+            System.Diagnostics.Process.Start(this.saveDirectory.FullPath);
         }
     }
 }

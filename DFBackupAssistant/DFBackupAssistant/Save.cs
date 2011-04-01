@@ -44,8 +44,6 @@ namespace DFBackupAssistant
 
             if (deleteAfter)
                 this.Delete();
-
-            System.Diagnostics.Process.Start(this.ParentDir);
         }
 
         public void Delete()

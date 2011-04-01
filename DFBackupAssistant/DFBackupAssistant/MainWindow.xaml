@@ -12,6 +12,7 @@
         <Menu>
             <MenuItem Header="_File">
                 <MenuItem Header="Locate Dwarf Fortress.exe" Click="LocateDF2010"/>
+                <MenuItem Header="Open Save Directory" Click="LaunchSaveDirectory" />
                 <MenuItem Header="Select Backup Save Folder" IsEnabled="False" />
                 <Separator />
                 <MenuItem Header="E_xit" Click="menuExit_Click" />
