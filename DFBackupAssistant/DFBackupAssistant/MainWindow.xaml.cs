@@ -52,7 +52,7 @@ namespace DFBackupAssistant
         private void PopulateSaveGames(object sender, RoutedEventArgs e)
         {
             comboSaveSelect.Items.Clear();
-            foreach (DFSave saveGame in this.saveDirectory.SaveGames)
+            foreach (Save saveGame in this.saveDirectory.SaveGames)
                 comboSaveSelect.Items.Add(saveGame);
             comboSaveSelect.SelectedIndex = 0;
         }
@@ -96,10 +96,10 @@ namespace DFBackupAssistant
 
         private void buttonBackup_Click(object sender, RoutedEventArgs e)
         {
-            DFSave saveToBackUp;
+            Save saveToBackUp;
             try
             {
-                saveToBackUp = (DFSave)this.comboSaveSelect.SelectedItem;
+                saveToBackUp = (Save)this.comboSaveSelect.SelectedItem;
                 
                 saveToBackUp.Archive((bool)checkBoxEraseAfter.IsChecked, (bool)checkBoxTimestampArchive.IsChecked);
                 if((bool)checkBoxEraseAfter.IsChecked)

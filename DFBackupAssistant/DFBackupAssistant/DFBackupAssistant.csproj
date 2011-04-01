@@ -86,7 +86,7 @@
     </ApplicationDefinition>
     <Compile Include="Backup.cs" />
     <Compile Include="BackupDirectory.cs" />
-    <Compile Include="DFSave.cs" />
+    <Compile Include="Save.cs" />
     <Compile Include="DFSaveDirectory.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

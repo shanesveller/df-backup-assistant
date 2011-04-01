@@ -9,13 +9,13 @@ using Ionic.Zlib;
 
 namespace DFBackupAssistant
 {
-    public class DFSave
+    public class Save
     {
         public string ParentDir { get; set; }
         public string Name { get; set; }
         public string FullPath { get { return Path.Combine(this.ParentDir, this.Name); } }
 
-        public DFSave(string dir, string n)
+        public Save(string dir, string n)
         {
             this.ParentDir = dir;
             this.Name = n;
