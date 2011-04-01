@@ -21,7 +21,7 @@ namespace DFBackupAssistant
     /// </summary>
     public partial class MainWindow : Window
     {
-        public DFSaveDirectory saveDirectory { get; set; }
+        public SaveDirectory saveDirectory { get; set; }
         private BackupDirectory backupDir { get; set; }
 
         public MainWindow()
@@ -76,7 +76,7 @@ namespace DFBackupAssistant
             
             FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
             string saveDirPath = System.IO.Path.Combine(fi.DirectoryName, "data", "save");
-            this.saveDirectory = new DFSaveDirectory(saveDirPath);
+            this.saveDirectory = new SaveDirectory(saveDirPath);
             
             this.PopulateSaveGames(sender, e);
             this.PopulateBackups(sender, e);

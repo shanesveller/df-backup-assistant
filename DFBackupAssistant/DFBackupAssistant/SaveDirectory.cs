@@ -6,13 +6,13 @@ using System.Text;
 
 namespace DFBackupAssistant
 {
-    public class DFSaveDirectory
+    public class SaveDirectory
     {
         public string FullPath { get; set; }
         public List<Save> SaveGames { get; set; }
         public DirectoryInfo DirectoryInfo { get { return new DirectoryInfo(this.FullPath); } }
 
-        public DFSaveDirectory(string fp)
+        public SaveDirectory(string fp)
         {
             this.FullPath = fp;
             this.SaveGames = new List<Save>();
