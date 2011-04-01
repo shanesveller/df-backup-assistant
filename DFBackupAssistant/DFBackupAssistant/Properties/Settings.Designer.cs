@@ -26,18 +26,6 @@ namespace DFBackupAssistant.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string PathTo7zaExe {
-            get {
-                return ((string)(this["PathTo7zaExe"]));
-            }
-            set {
-                this["PathTo7zaExe"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string PathToDFExe {
             get {
                 return ((string)(this["PathToDFExe"]));

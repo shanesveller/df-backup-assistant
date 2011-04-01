@@ -26,25 +26,6 @@ namespace DFBackupAssistant
             InitializeComponent();
         }
 
-        private void Locate7zip(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.FileName = "7za"; // Default file name
-            dlg.DefaultExt = ".exe"; // Default file extension
-            dlg.Filter = "Applications (.exe)|*.exe"; // Filter files by extension
-
-            // Show open file dialog box
-            Nullable<bool> result = dlg.ShowDialog();
-
-            // Process open file dialog box results
-            if (result == true)
-            {
-                // Open document
-                Properties.Settings.Default.PathTo7zaExe = dlg.FileName;
-                Properties.Settings.Default.Save();
-            }
-        }
-
         private void LocateDF2010(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -79,11 +60,6 @@ namespace DFBackupAssistant
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Properties.Settings.Default.PathTo7zaExe == "" || !File.Exists(Properties.Settings.Default.PathTo7zaExe))
-            {
-                MessageBox.Show("7za.exe not found. Please locate.");
-                this.Locate7zip(sender, e);
-            }
             if (Properties.Settings.Default.PathToDFExe == "" || !File.Exists(Properties.Settings.Default.PathToDFExe))
             {
                 MessageBox.Show("Dwarf Fortress.exe not found. Please locate.");
@@ -115,6 +91,11 @@ namespace DFBackupAssistant
                     this.PopulateSaveGames(sender, e);
             }
             catch (NullReferenceException) { }
+        }
+
+        private void menuExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
