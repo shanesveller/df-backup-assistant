@@ -15,7 +15,13 @@ namespace DFBackupAssistant
         {
             this.FullPath = f;
             this.Backups = new List<Backup>();
-            FileInfo[] backupFiles = new DirectoryInfo(f).GetFiles("*.zip");
+            this.RefreshBackups();
+        }
+
+        public void RefreshBackups()
+        {
+            this.Backups.Clear();
+            FileInfo[] backupFiles = new DirectoryInfo(this.FullPath).GetFiles("*.zip");
             foreach (FileInfo file in backupFiles)
                 this.Backups.Add(new Backup(file.FullName, file.Name));
         }

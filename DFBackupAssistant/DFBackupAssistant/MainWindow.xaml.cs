@@ -52,6 +52,7 @@ namespace DFBackupAssistant
 
         private void PopulateSaveGames(object sender, RoutedEventArgs e)
         {
+            this.saveDirectory.RefreshSaveGames();
             comboSaveSelect.Items.Clear();
             foreach (Save saveGame in this.saveDirectory.SaveGames)
                 comboSaveSelect.Items.Add(saveGame);
@@ -60,7 +61,7 @@ namespace DFBackupAssistant
 
         private void PopulateBackups(object sender, RoutedEventArgs e)
         {
-            this.backupDir = new BackupDirectory(this.saveDirectory.FullPath);
+            this.backupDir.RefreshBackups();
             comboBackupSelect.Items.Clear();
             foreach(Backup b in this.backupDir.Backups)
                 comboBackupSelect.Items.Add(b);
@@ -78,6 +79,7 @@ namespace DFBackupAssistant
             FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
             string saveDirPath = System.IO.Path.Combine(fi.DirectoryName, "data", "save");
             this.saveDirectory = new SaveDirectory(saveDirPath);
+            this.backupDir = new BackupDirectory(this.saveDirectory.FullPath);
             
             this.PopulateSaveGames(sender, e);
             this.PopulateBackups(sender, e);
@@ -114,13 +116,15 @@ namespace DFBackupAssistant
                 }
 
                 saveToBackUp.Archive(eraseAfter, timestamped);
-                if (eraseAfter)
-                    this.PopulateSaveGames(sender, e);
+            }
+            finally
+            {
+                this.PopulateSaveGames(sender, e);
                 this.PopulateBackups(sender, e);
                 if (browseAfter)
                     this.BrowseSaveDirectory(sender, e);
             }
-            catch (NullReferenceException) { }
+
         }
 
         private void buttonRestore_Click(object sender, RoutedEventArgs e)
@@ -155,6 +159,8 @@ namespace DFBackupAssistant
             selectedBackup.Restore(System.IO.Path.Combine(this.saveDirectory.FullPath, this.textBoxRestoreAs.Text), overwrite);
             string msg = String.Format("Backup {0} restored as {1} successfully.", selectedBackup.Name, restoreAs);
             MessageBox.Show(msg, "Restore Successful", MessageBoxButton.OK, MessageBoxImage.Information);
+            this.PopulateBackups(sender, e);
+            this.PopulateSaveGames(sender, e);
         }
 
         private void comboBackupSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -16,6 +16,12 @@ namespace DFBackupAssistant
         {
             this.FullPath = fp;
             this.SaveGames = new List<Save>();
+            this.RefreshSaveGames();
+        }
+
+        public void RefreshSaveGames()
+        {
+            this.SaveGames.Clear();
             DirectoryInfo[] dirs = new DirectoryInfo(this.FullPath).GetDirectories();
             foreach (DirectoryInfo subDir in dirs)
                 this.SaveGames.Add(new Save(this.FullPath, subDir.Name));
