@@ -46,8 +46,6 @@ namespace DFBackupAssistant
                 Properties.Settings.Default.PathToDFExe = dlg.FileName;
                 Properties.Settings.Default.Save();
             }
-            this.PopulateSaveGames(sender, e);
-            this.PopulateBackups(sender, e);
         }
 
         private void PopulateSaveGames(object sender, RoutedEventArgs e)
