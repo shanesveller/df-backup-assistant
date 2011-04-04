@@ -108,10 +108,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Backup.cs" />
-    <Compile Include="BackupDirectory.cs" />
-    <Compile Include="Save.cs" />
-    <Compile Include="SaveDirectory.cs" />
+    <Compile Include="Classes\Backup.cs" />
+    <Compile Include="Classes\BackupDirectory.cs" />
+    <Compile Include="Classes\Save.cs" />
+    <Compile Include="Classes\SaveDirectory.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
