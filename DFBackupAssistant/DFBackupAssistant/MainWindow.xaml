@@ -5,7 +5,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="Launch _Dwarf Fortress" Click="buttonLaunchDF_Click"/>
+                <MenuItem Header="Launch _Dwarf Fortress" Click="menuLaunchDF_Click"/>
                 <MenuItem Header="_Refresh Save Listing" Click="PopulateSaveGames"/>
                 <MenuItem Header="R_efresh Backup Listing" Click="PopulateBackups"/>
                 <MenuItem Header="_Browse Save Directory" Click="BrowseSaveDirectory" />

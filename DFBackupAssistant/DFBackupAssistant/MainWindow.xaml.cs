@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -21,14 +22,33 @@ namespace DFBackupAssistant
     /// </summary>
     public partial class MainWindow : Window
     {
-        public SaveDirectory saveDirectory { get; set; }
-        private BackupDirectory backupDir { get; set; }
-
+        SaveDirectory savedir;
+        FileSystemWatcher saveWatcher;
+        public SaveDirectory saveDirectory {
+            get { return savedir; }
+            set
+            {
+                savedir = value;
+                saveWatcher.Path = value.FullPath;
+                saveWatcher.EnableRaisingEvents = true;
+            }
+        }
+        public BackupDirectory backupDir { get; set; }
+        
         public MainWindow()
         {
             InitializeComponent();
+
+            saveWatcher = new FileSystemWatcher();
+            saveWatcher.Filter = "world.sav";
+            saveWatcher.IncludeSubdirectories = true;
+            saveWatcher.Created += new FileSystemEventHandler(saveWatcher_ChangedCreatedOrDeleted);
+            saveWatcher.Deleted += new FileSystemEventHandler(saveWatcher_ChangedCreatedOrDeleted);
+            saveWatcher.Changed += new FileSystemEventHandler(saveWatcher_ChangedCreatedOrDeleted);
+            saveWatcher.Renamed += new RenamedEventHandler(saveWatcher_Renamed);
         }
 
+        #region Settings Handlers
         private void LocateDF2010(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Dwarf Fortress Backup Assistant doesn't know where your Dwarf Fortress is installed to.\nPlease locate Dwarf Fortress.exe.");
@@ -66,12 +86,11 @@ namespace DFBackupAssistant
                 Properties.Settings.Default.BackupFolder = folderBrowserDlg.SelectedPath;
                 Properties.Settings.Default.Save();
 
-                if (this.backupDir != null && this.backupDir.FullPath != Properties.Settings.Default.BackupFolder)
-                    this.backupDir = new BackupDirectory(Properties.Settings.Default.BackupFolder);
-                
+                this.backupDir = new BackupDirectory(Properties.Settings.Default.BackupFolder);
                 this.PopulateBackups(sender, e);
             }
         }
+        #endregion
 
         private void PopulateSaveGames(object sender, RoutedEventArgs e)
         {
@@ -98,7 +117,7 @@ namespace DFBackupAssistant
 
             if (Properties.Settings.Default.BackupFolder == "" || !Directory.Exists(Properties.Settings.Default.BackupFolder))
                 this.LocateBackupDirectory(sender, e);
-            
+
             FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
             string saveDirPath = System.IO.Path.Combine(fi.DirectoryName, "data", "save");
             this.saveDirectory = new SaveDirectory(saveDirPath);
@@ -108,18 +127,26 @@ namespace DFBackupAssistant
             this.PopulateBackups(sender, e);
         }
 
+        #region Menu Handlers
         private void menuExit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void buttonLaunchDF_Click(object sender, RoutedEventArgs e)
+        private void BrowseSaveDirectory(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(this.saveDirectory.FullPath);
+        }
+
+        private void menuLaunchDF_Click(object sender, RoutedEventArgs e)
         {
             var startInfo = new ProcessStartInfo(Properties.Settings.Default.PathToDFExe);
             startInfo.WorkingDirectory = new FileInfo(Properties.Settings.Default.PathToDFExe).DirectoryName;
             Process.Start(startInfo);
         }
+        #endregion
 
+        #region Button Handlers
         private void buttonBackup_Click(object sender, RoutedEventArgs e)
         {
             Save saveToBackUp;
@@ -185,16 +212,13 @@ namespace DFBackupAssistant
             this.PopulateBackups(sender, e);
             this.PopulateSaveGames(sender, e);
         }
+        #endregion
 
+        #region Other Control Handlers
         private void comboBackupSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.comboBackupSelect.SelectedItem != null)
                 this.textBoxRestoreAs.Text = ((Backup)this.comboBackupSelect.SelectedItem).Name.Split('.').First();
-        }
-
-        private void BrowseSaveDirectory(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(this.saveDirectory.FullPath);
         }
 
         private void UpdateBackupFilenameTextBox(object sender, RoutedEventArgs e)
@@ -217,7 +241,18 @@ namespace DFBackupAssistant
                 this.textBoxBackupFilename.Text += ".zip";
             }
         }
+        #endregion
+        
+        #region FileSystemWatcherHandlers
+        private void saveWatcher_ChangedCreatedOrDeleted(object sender, FileSystemEventArgs e)
+        {
+            this.PopulateSaveGames(sender, null);
+        }
 
-
+        private void saveWatcher_Renamed(object sender, RenamedEventArgs e)
+        {
+            this.PopulateSaveGames(sender, null);
+        }
+        #endregion
     }
 }
