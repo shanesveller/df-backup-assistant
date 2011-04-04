@@ -31,6 +31,7 @@ namespace DFBackupAssistant
 
         private void LocateDF2010(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Dwarf Fortress Backup Assistant doesn't know where your Dwarf Fortress is installed to.\nPlease locate Dwarf Fortress.exe.");
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.FileName = "Dwarf Fortress"; // Default file name
             dlg.DefaultExt = ".exe"; // Default file extension
@@ -40,12 +41,29 @@ namespace DFBackupAssistant
             Nullable<bool> result = dlg.ShowDialog();
 
             // Process open file dialog box results
-            if (result == true)
+            if ((bool)result)
             {
                 // Open document
                 Properties.Settings.Default.PathToDFExe = dlg.FileName;
                 Properties.Settings.Default.Save();
             }
+        }
+
+        private void LocateBackupDirectory(object sender, RoutedEventArgs e)
+        {
+            var folderBrowserDlg = new System.Windows.Forms.FolderBrowserDialog();
+            MessageBox.Show("Please select the folder to store backups in.");
+            folderBrowserDlg.ShowNewFolderButton = true;
+            folderBrowserDlg.SelectedPath = Directory.GetCurrentDirectory();
+            System.Windows.Forms.DialogResult res = folderBrowserDlg.ShowDialog();
+            if (res == System.Windows.Forms.DialogResult.OK)
+            {
+                MessageBox.Show("New backups will be saved and loaded from " + folderBrowserDlg.SelectedPath);
+
+                Properties.Settings.Default.BackupFolder = folderBrowserDlg.SelectedPath;
+                Properties.Settings.Default.Save();
+            }
+            this.PopulateBackups(sender, e);
         }
 
         private void PopulateSaveGames(object sender, RoutedEventArgs e)
@@ -69,10 +87,7 @@ namespace DFBackupAssistant
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (Properties.Settings.Default.PathToDFExe == "" || !File.Exists(Properties.Settings.Default.PathToDFExe))
-            {
-                MessageBox.Show("Dwarf Fortress.exe not found. Please locate.");
                 this.LocateDF2010(sender, e);
-            }
             
             FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
             string saveDirPath = System.IO.Path.Combine(fi.DirectoryName, "data", "save");

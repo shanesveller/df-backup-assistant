@@ -5,7 +5,6 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                
                 <MenuItem Header="Launch _Dwarf Fortress" Click="buttonLaunchDF_Click"/>
                 <MenuItem Header="_Refresh Save Listing" Click="PopulateSaveGames"/>
                 <MenuItem Header="R_efresh Backup Listing" Click="PopulateBackups"/>
@@ -15,7 +14,7 @@
             </MenuItem>
             <MenuItem Header="_Preferences">
                 <MenuItem Header="_Locate Dwarf Fortress.exe" Click="LocateDF2010"/>
-                <MenuItem Header="_Select Backup Destination Folder" IsEnabled="False" />
+                <MenuItem Header="_Select Backup Destination Folder" Click="LocateBackupDirectory" />
             </MenuItem>
         </Menu>
         <TabControl DockPanel.Dock="Top">
