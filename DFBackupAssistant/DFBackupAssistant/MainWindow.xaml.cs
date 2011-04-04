@@ -54,16 +54,23 @@ namespace DFBackupAssistant
             var folderBrowserDlg = new System.Windows.Forms.FolderBrowserDialog();
             MessageBox.Show("Please select the folder to store backups in.");
             folderBrowserDlg.ShowNewFolderButton = true;
-            folderBrowserDlg.SelectedPath = Directory.GetCurrentDirectory();
+            if (Properties.Settings.Default.BackupFolder != "")
+                folderBrowserDlg.SelectedPath = Properties.Settings.Default.BackupFolder;
+            else
+                folderBrowserDlg.SelectedPath = Directory.GetCurrentDirectory();
             System.Windows.Forms.DialogResult res = folderBrowserDlg.ShowDialog();
             if (res == System.Windows.Forms.DialogResult.OK)
             {
-                MessageBox.Show("New backups will be saved and loaded from " + folderBrowserDlg.SelectedPath);
+                MessageBox.Show("New backups will be saved and loaded from:\n" + folderBrowserDlg.SelectedPath);
 
                 Properties.Settings.Default.BackupFolder = folderBrowserDlg.SelectedPath;
                 Properties.Settings.Default.Save();
+
+                if (this.backupDir != null && this.backupDir.FullPath != Properties.Settings.Default.BackupFolder)
+                    this.backupDir = new BackupDirectory(Properties.Settings.Default.BackupFolder);
+                
+                this.PopulateBackups(sender, e);
             }
-            this.PopulateBackups(sender, e);
         }
 
         private void PopulateSaveGames(object sender, RoutedEventArgs e)
@@ -88,11 +95,14 @@ namespace DFBackupAssistant
         {
             if (Properties.Settings.Default.PathToDFExe == "" || !File.Exists(Properties.Settings.Default.PathToDFExe))
                 this.LocateDF2010(sender, e);
+
+            if (Properties.Settings.Default.BackupFolder == "" || !Directory.Exists(Properties.Settings.Default.BackupFolder))
+                this.LocateBackupDirectory(sender, e);
             
             FileInfo fi = new FileInfo(Properties.Settings.Default.PathToDFExe);
             string saveDirPath = System.IO.Path.Combine(fi.DirectoryName, "data", "save");
             this.saveDirectory = new SaveDirectory(saveDirPath);
-            this.backupDir = new BackupDirectory(this.saveDirectory.FullPath);
+            this.backupDir = new BackupDirectory(Properties.Settings.Default.BackupFolder);
             
             this.PopulateSaveGames(sender, e);
             this.PopulateBackups(sender, e);
@@ -119,7 +129,7 @@ namespace DFBackupAssistant
             try
             {
                 saveToBackUp = (Save)this.comboSaveSelect.SelectedItem;
-                string filename = saveToBackUp.ArchiveFilename(timestamped);
+                string filename = saveToBackUp.ArchiveFilename(this.backupDir, timestamped);
 
                 if (File.Exists(filename))
                 {
@@ -128,7 +138,7 @@ namespace DFBackupAssistant
                         File.Delete(filename);
                 }
 
-                saveToBackUp.Archive(eraseAfter, timestamped);
+                saveToBackUp.Archive(this.backupDir, eraseAfter, timestamped);
             }
             finally
             {
