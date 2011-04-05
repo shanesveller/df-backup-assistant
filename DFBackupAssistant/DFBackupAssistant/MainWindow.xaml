@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DFBackupAssistant.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Dwarf Fortress Backup Assistant" Height="247" Width="305" Loaded="Window_Loaded">
+        Title="Dwarf Fortress Backup Assistant" Height="259" Width="305" Loaded="Window_Loaded">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -35,6 +35,17 @@
                     <Label Content="Restore As:" Name="label1" Margin="3" />
                     <TextBox Name="textBoxRestoreAs" Margin="3" />
                     <CheckBox Content="Overwrite" Grid.Row="3" Name="checkBoxRestoreOverwrite" Margin="3" />
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="DF Settings">
+                <StackPanel>
+                    <Label Content="Autosave Type:" Height="28" Name="labelAutosaveType" />
+                    <ComboBox Name="comboAutosaveType" Margin="3" />
+                    <CheckBox Content="Auto-Backup" Height="16" Name="checkBoxAutoBackup" Margin="3" IsEnabled="False" />
+                    <CheckBox Content="Compress Saves" Height="16" Name="checkBoxCompressSaves" Margin="3" ToolTip="Change this to NO if you want to leave save uncompressed (you might want to do this if you are experience save corruption)." />
+                    <CheckBox Content="Save On Embark" Height="16" Name="checkBoxInitialSave" Margin="3" ToolTip="Set this to YES if you want it to save the game when you start a new fortress." />
+                    <CheckBox Content="Pause On Autosave" Height="16" Name="checkBoxPauseOnAutosave" Margin="3" ToolTip="Set AUTOSAVE_PAUSE to YES if you want the game to pause every time it autosaves." />
+                    <CheckBox Content="Pause On Load" Height="16" Name="checkBoxPauseOnLoad" Margin="3" ToolTip="Set this to NO to make Dwarf Fortress remain in the saved pause state when you load an active game." />
                 </StackPanel>
             </TabItem>
         </TabControl>
